@@ -4,10 +4,20 @@ import User from './User'
 const queueSchema = new mongoose.Schema({
 
     priority:
-        { type: Boolean, default: false },
-    list: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    {
+        type: Boolean,
+        default: false
 
-    createm: {
+    },
+
+    list: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+
+
+    createdAt: {
         type: Date,
         default: Date.now
     },
