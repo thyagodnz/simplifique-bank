@@ -9,6 +9,12 @@ async function getUsers(req, res) {
 async function createUser(req, res) {
     const user = req.body
 
+    if (user.age >= 60) {
+        user.priority = true
+    } else {
+        user.priority = false
+    }
+
     const newUser = await User.create(user)
 
     return res.status(201).json(newUser)
@@ -17,30 +23,34 @@ async function createUser(req, res) {
 async function deleteUser(req, res) {
     const id = req.params.id
 
-    await User.findByIdAndDelete({_id: id})
+    await User.findByIdAndDelete({ _id: id })
 
-    return res.status(200).json({res: 'Usuário deletado com sucesso'})
+    return res.status(200).json({ res: 'Usuário deletado com sucesso' })
 }
 
 async function updateUser(req, res) {
-    const id = req.params.id;
-    const updateData = req.body;
+    const id = req.params.id
+    const newUser = req.body
+
+    if (newUser.age >= 60) {
+        newUser.priority = true
+    } else {
+        newUser.priority = false
+    }
 
     try {
-        const updatedUser = await User.findByIdAndUpdate(id, updateData, {
+        const updatedUser = await User.findByIdAndUpdate(id, newUser, {
             new: true
         });
 
         if (!updatedUser) {
-            return res.status(404).json({ res: 'Usuário não encontrado' });
+            return res.status(404).json({ res: 'Usuário não encontrado' })
         }
 
         return res.status(200).json(updatedUser);
     } catch (error) {
-        return res.status(500).json({ res: 'Erro ao atualizar usuário', error: error.message });
+        return res.status(500).json({ res: 'Erro ao atualizar usuário', error: error.message })
     }
 }
-
-
 
 export { getUsers, createUser, deleteUser, updateUser }

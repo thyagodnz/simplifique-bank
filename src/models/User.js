@@ -9,10 +9,17 @@ const userSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    priority: {
+        type: Boolean,
+        default: false
+    },
+    ticket: {
+        type: String
+    },
     createdAt: {
         type: Date,
         default: Date.now()
-    },
+    }
 })
 
 export default mongoose.model('User', userSchema)

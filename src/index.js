@@ -1,13 +1,11 @@
 import express from 'express'
-
 import routes from './routes.js'
+import connectDataBase from './database/db.js'
 
-import connectDataBase from './database/db.js';
+const app = express()
 
-const app = express();
-
-app.use(express.json());
-app.use(routes);
+app.use(express.json())
+app.use(routes)
 
 connectDataBase()
     .then(() => {
