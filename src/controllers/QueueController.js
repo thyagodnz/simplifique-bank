@@ -4,8 +4,8 @@ import User from '../models/User'
 async function getQueue(req, res) {
     try {
         const queueList = await Queue.find()
-            .populate('list')  // corrigido para 'list'
-            .sort({ 'list.priority': 1, createdAt: 1 })  // corrigido para 'list.priority'
+            .populate('list')  
+            .sort({ 'list.priority': 1, createdAt: 1 })  
 
         return res.status(200).json(queueList)
     } catch (error) {
@@ -23,7 +23,7 @@ async function createQueue(req, res) {
         }
 
         const newQueueEntry = new Queue({
-            list: userId  // corrigido para 'list'
+            list: userId  
         })
 
         await newQueueEntry.save()
