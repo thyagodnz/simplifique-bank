@@ -1,39 +1,39 @@
-import Queue from '../models/Queue.js'
-import User from '../models/User.js'
+import Queue from '../models/Queue.js';
+import User from '../models/User.js';
 
 async function getQueue(req, res) {
     try {
         const queueList = await Queue.find()
             .populate('list')  
-            .sort({ 'list.priority': 1, createdAt: 1 })  
+            .sort({ 'list.priority': 1, createdAt: 1 });  
 
-        return res.status(200).json(queueList)
+        return res.status(200).json(queueList);
     } catch (error) {
-        return res.status(500).json({ message: 'Erro ao buscar a fila', error: error.message })
+        return res.status(500).json({ message: 'Erro ao buscar a fila', error: error.message });
     }
 }
 
 async function createQueue(req, res) {
     try {
-        const { userId } = req.body
+        const { userId } = req.body;
 
-        const user = await User.findById(userId)
+        const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ message: 'Usuário não encontrado' })
+            return res.status(404).json({ message: 'Usuário não encontrado' });
         }
 
         const newQueueEntry = new Queue({
             list: userId  
-        })
+        });
 
-        await newQueueEntry.save()
-        return res.status(201).json(newQueueEntry)
+        await newQueueEntry.save();
+        return res.status(201).json(newQueueEntry);
     } catch (error) {
-        return res.status(500).json({ message: 'Erro ao adicionar à fila', error: error.message })
+        return res.status(500).json({ message: 'Erro ao adicionar à fila', error: error.message });
     }
 }
 
-export { getQueue, createQueue }
+export { getQueue, createQueue };
 
 //Testando no Thunder Client
 

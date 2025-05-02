@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const queueSchema = new mongoose.Schema({
     list: {
@@ -10,6 +10,6 @@ const queueSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-})
+});
 
-export default mongoose.model('Queue', queueSchema)
+export default mongoose.model('Queue', queueSchema);
