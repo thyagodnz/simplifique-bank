@@ -1,5 +1,5 @@
-import Queue from '../models/Queue'
-import User from '../models/User'
+import Queue from '../models/Queue.js'
+import User from '../models/User.js'
 
 async function getQueue(req, res) {
     try {
@@ -33,4 +33,17 @@ async function createQueue(req, res) {
     }
 }
 
-export default { getQueue, createQueue }
+export { getQueue, createQueue }
+
+//Testando no Thunder Client
+
+//GET /users: Para listar todos os usuários.
+
+//POST /users: Para criar um novo usuário.
+
+//GET /queue: Para listar todos os usuários na fila, ordenados por prioridade.
+
+//POST /queue: Para adicionar um usuário à fila, fornecendo o userId no corpo da requisição, como este exemplo:
+
+//{
+    //"userId": "63f0b22f1c2d2f37f8f1ad59"  // ID do usuário
