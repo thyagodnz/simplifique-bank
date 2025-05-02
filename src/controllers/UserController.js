@@ -1,10 +1,5 @@
 import User from '../models/User.js';
-
-function generateTicket(isPriority) {
-    const prefix = isPriority ? 'P-' : 'NP-';
-    const randomNumber = Math.floor(1000 + Math.random() * 9000);
-    return `${prefix}${randomNumber}`;
-}
+import { generateTicket } from '../utils/functions.js';
 
 async function getUsers(req, res) {
     try {
@@ -67,4 +62,13 @@ async function updateUser(req, res) {
     }
 }
 
-export { getUsers, createUser, deleteUser, updateUser };
+async function getUsersPriority(req, res) {
+    try {
+        const priorityUsers = await User.find({ priority: true }).sort({ createdAt: 1 });
+        return res.status(200).json(priorityUsers);
+    } catch (error) {
+        return res.status(500).json({ res: 'Erro ao buscar usuários prioritários', error: error.message });
+    }
+}
+
+export { getUsers, createUser, deleteUser, updateUser, getUsersPriority };
