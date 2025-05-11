@@ -1,33 +1,54 @@
-import User from '../models/User.js'
+import User from '../models/User.js';
+import { generateTicket } from '../utils/functions.js';
 
 async function getUsers(req, res) {
-    const users = await User.find()
-
-    return res.status(200).json(users)
+    try {
+        const users = await User.find();
+        return res.status(200).json(users);
+    } catch (error) {
+        return res.status(500).json({ res: 'Erro ao buscar usuários', error: error.message });
+    }
 }
 
 async function createUser(req, res) {
-    const user = req.body
+    try {
+        const user = req.body;
 
-    const newUser = await User.create(user)
+        user.priority = user.age >= 60;
+        user.ticket = generateTicket(user.priority);
 
-    return res.status(201).json(newUser)
+        const newUser = await User.create(user);
+        return res.status(201).json(newUser);
+    } catch (error) {
+        return res.status(500).json({ res: 'Erro ao criar usuário', error: error.message });
+    }
 }
 
 async function deleteUser(req, res) {
-    const id = req.params.id
+    const id = req.params.id;
 
-    await User.findByIdAndDelete({_id: id})
+    try {
+        const deletedUser = await User.findByIdAndDelete({ _id: id });
 
-    return res.status(200).json({res: 'Usuário deletado com sucesso'})
+        if (!deletedUser) {
+            return res.status(404).json({ res: 'Usuário não encontrado' });
+        }
+
+        return res.status(200).json({ res: 'Usuário deletado com sucesso' });
+    } catch (error) {
+        return res.status(500).json({ res: 'Erro ao deletar usuário', error: error.message });
+    }
 }
 
 async function updateUser(req, res) {
     const id = req.params.id;
-    const updateData = req.body;
+    const newUser = req.body;
+
+    newUser.priority = newUser.age >= 60;
+    newUser.ticket = generateTicket(newUser.priority);
 
     try {
-        const updatedUser = await User.findByIdAndUpdate(id, updateData, {
+        const updatedUser = await User.findByIdAndUpdate(id, newUser, {
             new: true
         });
 
@@ -41,6 +62,13 @@ async function updateUser(req, res) {
     }
 }
 
+async function getUsersPriority(req, res) {
+    try {
+        const priorityUsers = await User.find({ priority: true }).sort({ createdAt: 1 });
+        return res.status(200).json(priorityUsers);
+    } catch (error) {
+        return res.status(500).json({ res: 'Erro ao buscar usuários prioritários', error: error.message });
+    }
+}
 
-
-export { getUsers, createUser, deleteUser, updateUser }
+export { getUsers, createUser, deleteUser, updateUser, getUsersPriority };
