@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 async function connectDataBase() {
-    await mongoose.connect(
-        'mongodb+srv://thyago:iWEg6QpkipCC3rHh@cluster0.xain9id.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0'
-    );
+    await mongoose.connect(process.env.DATABASE_URL);
 }
 
 export default connectDataBase;
